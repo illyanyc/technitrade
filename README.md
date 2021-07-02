@@ -18,19 +18,25 @@ Columbia FinTech Bootcamp
 
 Get stock alerts based on technical analysis and sentiment analysis powered by AI. Using an AWS chatbot, the user can track up to 10 stocks (or 10 AI selected stocks), and receive buy, sell or hold recommendations. The recommendations are based on LSTM models trained on a multitude of technical indicators and sentiment analysis models using NewsAPI articles and Twitter. The recommendations allow the user to find optimal position entry and exit points.
 
+
+
 ---
 
-# Installation
+# Application Logic
+
+![flowchart](img/flowchart.svg)
+
+
 
 ---
 
 # Data
 
 * Database - AWS RDS
-    1. GUID
-    2. Name
-    3. Start date
-    4. 10 stocks - tickers
+    * GUID
+    * Name
+    * Start date
+    * 10 stocks - tickers
 
 
 ---
