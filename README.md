@@ -4,7 +4,7 @@
 ---
 **Disclosure**
 
-:warning: NOT INVESTMENT ADVICE :warning:
+:warning:   NOT INVESTMENT ADVICE   :warning:
 
 The content produced by this application is for informational purposes only, you should not construe any such information or other material as legal, tax, investment, financial, or other advice. Nothing contained in this article, Git Repo or withing the output produced by this application constitutes a solicitation, recommendation, endorsement, or offer by any member involved working on this project, any company they represent or any third party service provider to buy or sell any securities or other financial instruments in this or in in any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such jurisdiction. This appliation was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework.
 
