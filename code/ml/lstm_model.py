@@ -108,23 +108,56 @@ class MachineLearningModel:
         self.n_out = n_out
         self.n_layers = n_layers
         self.n_nodes = n_nodes
-        self.n_features = self.df.shape[1]
         self.epochs = epochs
         self.batch_size = batch_size
         self.validation_split = validation_split
         self.activation = activation
         self.optimizer = optimizer
         self.loss = loss
+        
+        # LSTM class variables
+        self.n_features = None
         self.close_scaler = None
         self.model = None
+        self.train_df = None
+        self.predictions = None
+        self.rmse_value = None
         
 
-    
-    # Helper Functions
+    ########################
+    ### Helper Functions ###
+    ########################
     def print_df(self):
         '''Prints DataFrame head'''
         print(self.df.head())
+        
+    def get_model_summary(self):
+        '''Prints Model Summary'''
+        try:
+            self.model.summary()
+        except:
+            print("Model is not built.")
+            
+    def get_model(self):
+        '''Returns Model Object'''
+        return self.model
     
+    def drop_columns(self, cols : list = ['open', 'high', 'low', 'volume']):
+        '''Drops pd.DataFrame colums'''
+        try:
+            self.df.drop(columns=cols, inplace=True)
+        except:
+            print("Dataframe un-used columns alread dropped")
+        
+    def set_model_shape(self):
+        '''Sets model shape by passing shape to n_features'''
+        self.n_features = self.df.shape[1]
+    
+    
+    
+    #################################
+    ### LSTM Model Data Functions ###
+    #################################
     def split_sequence(self, sequence):
         '''
         Splits the multivariate time sequence
@@ -161,54 +194,7 @@ class MachineLearningModel:
 
         return np.array(X), np.array(y)
 
-
-    def visualize_training_results(self, hist):
-        '''
-        Visualizes the training results  
-        '''
-        
-        # plot
-        history = hist.history
-        plt.figure(figsize=(16,5))
-        plt.plot(history['val_loss'])
-        plt.plot(history['loss'])
-        plt.legend(['val_loss', 'loss'])
-        plt.title('Loss')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.show()
-        plt.figure(figsize=(16,5))
-        plt.plot(history['val_accuracy'])
-        plt.plot(history['accuracy'])
-        plt.legend(['val_accuracy', 'accuracy'])
-        plt.title('Accuracy')
-        plt.xlabel('Epochs')
-        plt.ylabel('Accuracy')
-        plt.show()
-
-        
-    def visualize_training_price(self):
-        # inverse scaler, transform values to original price
-        actual = pd.DataFrame(self.close_scaler.inverse_transform(self.df[["close"]]), 
-                              index=self.df.index, 
-                              columns=[self.df.columns[0]])
-
-        # build pd.DataFrame of predicted values to validate against
-        predictions = self.validater()
-
-#         # print RMSE
-#         print("RMSE:", self.rmse(actual, predictions))
-
-        # plot
-        plt.figure(figsize=(16,6))
-        plt.plot(predictions, label='Predicted')
-        plt.plot(actual, label='Actual')
-        plt.title(f"Predicted vs Actual Closing Prices")
-        plt.ylabel("Price")
-        plt.legend()
-        plt.show()
     
-
     def add_hidden_layers(self, 
                           n_layers : int, 
                           n_nodes : int, 
@@ -251,7 +237,13 @@ class MachineLearningModel:
             except:
                 pass
 
+            
+    def validate(self):
+        '''Vaildates predictions'''
+        self.predictions = self.validater()
+        self.rmse()
 
+        
     def validater(self):
         '''
         Creates predicted values.
@@ -263,11 +255,11 @@ class MachineLearningModel:
         '''
         
         # create empty pd.DataFrame to store predictions
-        predictions = pd.DataFrame(index=self.df.index, columns=[self.df.columns[0]])
+        predictions = pd.DataFrame(index=self.train_df.index, columns=[self.train_df.columns[0]])
 
-        for i in range(self.n_in, len(self.df)-self.n_in, self.n_out):
+        for i in range(self.n_in, len(self.train_df)-self.n_in, self.n_out):
             # create data time windows
-            x = self.df[-i - self.n_in:-i]
+            x = self.train_df[-i - self.n_in:-i]
             # predict using the time window
             y_pred = self.model.predict(np.array(x).reshape(1, self.n_in, self.n_features))
             
@@ -282,32 +274,30 @@ class MachineLearningModel:
                                    columns=[x.columns[0]])
             
             # Updating the predictions DF
-            predictions = pd.concat([predictions, pred_df], axis=0)
+            predictions.update(pred_df)
+        
+        predictions = predictions.fillna(method='bfill')
 
         return predictions
 
 
-    # Room Mean Square Error
-    def rmse(self, df1, df2):
+    def rmse(self):
         '''
         Calculates the RMS (root mean square) error between the two pd.Dataframes
-        
-        Returns
-        ------
-        error : float
-            RMS error
         '''
-        df = df1.copy()
-        df['close2'] = df2
+        df = pd.DataFrame(self.df["close"].copy())
+        df['close2'] = self.predictions
         df.dropna(inplace=True)
-        df['diff'] = df.close - df.close2
+        df['diff'] = df["close"] - df["close2"]
         rms = (df[['diff']]**2).mean()
         error = float(np.sqrt(rms))
-        
-        return error
+        self.rmse_value = error
+
     
     
-    # Train Machine Learning Model
+    ######################################
+    ### LSTM Model Builder and Trainer ###
+    ######################################
     def build_model(self, summary : int = 1, verbose : int = 0):
         '''
         Trains LSTM model : 
@@ -317,29 +307,36 @@ class MachineLearningModel:
                 
             2. Splits the sequence into X and y : self.split_sequence()
             
-            2. Builds LSTM model : hard-coded layers and self.add_hidden_layers()
+            3. Builds LSTM model : hard-coded layers and self.add_hidden_layers()
+            
+            4. Trains LSTM Model
             
         Returns
         -------
         trained_model : tf.model
-            Trained LSTM model
+            Trained LSTM model history
         '''
+        # drop un-used columns from pd.DataFrame
+        self.drop_columns()
+        
+        # set self.n_features parameter
+        self.set_model_shape()
         
         # deep copy the pd.DataFrame containing technical indicators
-        train_df = self.df.copy(deep=True)
-        
+        self.train_df = self.df.copy(deep=True)
+
         # declare a scaler using RobustScaler() for 'close' data
         self.close_scaler = RobustScaler()
-        self.close_scaler.fit(train_df[['close']])
+        self.close_scaler.fit(self.train_df[['close']])
     
         # declare a scaler using RobustScaler() for technical indicator data
         scaler = RobustScaler()
         
         # scale the data
-        train_df = pd.DataFrame(scaler.fit_transform(train_df), columns=train_df.columns, index=train_df.index)
+        self.train_df = pd.DataFrame(scaler.fit_transform(self.train_df), columns=self.train_df.columns, index=self.train_df.index)
         
         # split data into appropriate sequences
-        X, y = self.split_sequence(train_df.to_numpy())
+        X, y = self.split_sequence(self.train_df.to_numpy())
         
         # instatiate the TensorFlow model
         self.model = Sequential()
@@ -352,8 +349,8 @@ class MachineLearningModel:
 
         # add hidden layers
         self.add_hidden_layers(n_layers=self.n_layers, 
-                    n_nodes=self.n_nodes, 
-                    activation=self.activation)
+                               n_nodes=self.n_nodes, 
+                               activation=self.activation)
 
         # add the last hidden layer
         self.model.add(LSTM(30, activation=self.activation))
@@ -376,18 +373,9 @@ class MachineLearningModel:
         return hist
 
     
-    # Model Helper Methods
-    def get_model_summary(self):
-        '''Prints Model Summary'''
-        try:
-            self.model.summary()
-        except:
-            print("Model is not built.")
-            
-    def get_model(self):
-        '''Returns Model Object'''
-        return self.model
-    
+    #####################################
+    ### Model export/import functions ###
+    #####################################
     def save_model(self, filename : str, filetype : str = 'h5'):
         '''Saves model'''
         
@@ -411,6 +399,48 @@ class MachineLearningModel:
     def load_model(self, filename : str):
         '''Loads model'''
         self.model = load_model(filename)
+        
+    ###############################
+    ### Visualization Functions ###
+    ###############################
+    def visualize_training_results(self, hist):
+        '''
+        Visualizes the training results  
+        '''
+        
+        # plot
+        history = hist.history
+        plt.figure(figsize=(16,5))
+        plt.plot(history['val_loss'])
+        plt.plot(history['loss'])
+        plt.legend(['val_loss', 'loss'])
+        plt.title('Loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.show()
+        plt.figure(figsize=(16,5))
+        plt.plot(history['val_accuracy'])
+        plt.plot(history['accuracy'])
+        plt.legend(['val_accuracy', 'accuracy'])
+        plt.title('Accuracy')
+        plt.xlabel('Epochs')
+        plt.ylabel('Accuracy')
+        plt.show()
+
+        
+    def visualize_training_price(self):
+        '''
+        Visualizes Actual vs. Predicted stock price
+        '''
+
+        # plot
+        plt.figure(figsize=(16,6))
+        plt.plot(self.predictions, label='Predicted')
+        plt.plot(self.df["close"], label='Actual')
+        plt.title(f"Predicted vs. Actual Closing Prices")
+        plt.ylabel("Price, $USD")
+        plt.legend()
+        plt.show()
         
         
         
