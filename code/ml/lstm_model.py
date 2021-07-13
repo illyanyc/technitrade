@@ -16,7 +16,7 @@ from tensorflow.keras.models import load_model
 
 class MachineLearningModel:
     '''
-    Class used to handle all Machine Learning tasks:
+    Class used to handle the following LSTM tasks:
     1. Data pre-processing :  Scaling Data
     2. Model building : LSTM hidden layer structuring
     3. Model training : Training model on technical indicator data
@@ -418,6 +418,7 @@ class MachineLearningModel:
         plt.xlabel('Epochs')
         plt.ylabel('Loss')
         plt.show()
+        
         plt.figure(figsize=(16,5))
         plt.plot(history['val_accuracy'])
         plt.plot(history['accuracy'])
@@ -443,5 +444,102 @@ class MachineLearningModel:
         plt.show()
         
         
+class ForecastPrice:
+    '''Class is used to forecast Closing price of stock based on pre-trained LSTM model'''
+    def __init__(self,
+                 data : pd.DataFrame,
+                 n_in : int = 100,
+                 n_out : int = 14):
         
- 
+        self.df = data
+        self.n_in = n_in
+        self.n_out = n_out
+        
+        
+        # Model class parameters
+        self.model = None
+        self.scaler = None
+        self.close_scaler = None
+        self.n_features = None
+        self.forecasted_price = None
+        
+        
+        
+    ########################
+    ### Helper Functions ###
+    ########################
+    def print_df(self):
+        '''Prints DataFrame head'''
+        print(self.df.head())
+        
+    def get_model_summary(self):
+        '''Prints Model Summary'''
+        try:
+            self.model.summary()
+        except:
+            print("Model is not built.")
+            
+    def get_model(self):
+        '''Returns Model Object'''
+        return self.model
+    
+    def drop_columns(self, cols : list = ['open', 'high', 'low', 'volume']):
+        '''Drops pd.DataFrame colums'''
+        try:
+            self.df.drop(columns=cols, inplace=True)
+        except:
+            print("Dataframe un-used columns alread dropped")
+        
+    def set_model_shape(self):
+        '''Sets model shape by passing shape to n_features'''
+        self.n_features = self.df.shape[1]
+        
+    def load_model(self, filename : str):
+        '''Loads model'''
+        self.model = load_model(filename)
+        
+    def forecast(self):
+        '''Forecasts stock price based on pre-trained LSTM model'''
+        
+        # drop un-used columns from pd.DataFrame
+        self.drop_columns()
+        
+        # set self.n_features parameter
+        self.set_model_shape()
+        
+        # deep copy the pd.DataFrame containing technical indicators
+        forecast_df = self.df.copy(deep=True)
+        
+        self.close_scaler = RobustScaler()
+        self.close_scaler.fit(forecast_df[['close']])
+        
+        self.scaler = RobustScaler()
+        transformed_forecast_df = pd.DataFrame(self.scaler.fit_transform(forecast_df), 
+                                               columns=forecast_df.columns, 
+                                               index=forecast_df.index).tail(self.n_in)
+        
+        
+        # transform technical analysis data to np.array
+        forecast_arr = np.array(transformed_forecast_df).reshape(1, 
+                                                                 self.n_in, 
+                                                                 self.n_features)
+        
+        # predicting off of the new data
+        pred_y = self.model.predict(forecast_arr)
+        
+        # inverse_transform the predicted values back to original scale
+        pred_y = self.close_scaler.inverse_transform(pred_y)[0]
+        
+        # parse perdicted values to pd.DataFrame, adjust date scale (index)
+        preds = pd.DataFrame(pred_y, 
+                     index=pd.date_range(start=forecast_df.index[-1]+timedelta(days=1), 
+                                         periods=len(pred_y), 
+                                         freq="B"), 
+                     columns=[forecast_df.columns[0]])
+        
+        # set class variable
+        self.forecasted_price = preds
+        
+        return preds
+        
+         
