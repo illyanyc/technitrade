@@ -285,10 +285,10 @@ class MachineLearningModel:
         '''
         Calculates the RMS (root mean square) error between the two pd.Dataframes
         '''
-        df = pd.DataFrame(self.df["close"].copy())
-        df['close2'] = self.predictions
+        df = pd.DataFrame(self.df['close'].copy())
+        df['close_pred'] = self.predictions
         df.dropna(inplace=True)
-        df['diff'] = df["close"] - df["close2"]
+        df['diff'] = df['close'] - df['close_pred']
         rms = (df[['diff']]**2).mean()
         error = float(np.sqrt(rms))
         self.rmse_value = error
