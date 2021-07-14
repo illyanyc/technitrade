@@ -18,6 +18,8 @@ This appliation was created solely to satisfy the requirements of Columbia Unive
 * [Overview](#overview)
 * [Application Logic](#application-logic)
 * [Libraries](#libraries)
+* [Database](#database)
+* [Flask API](#flask-api)
 * [AWS Interface](#aws-interface)
 * [Technical Analysis](#technical-analysis)
 * [Machine Learning Model](#machine-learning)
@@ -47,10 +49,16 @@ The following libraries are used:
 * [Numpy](https://numpy.org/) - "The fundamental package for scientific computing with Python"
 * [Pandas](https://pandas.pydata.org/) - data analysis and manipulation tool
 
+### Database
+* [boto3]
+* [prycopg2]
+* [configparser]
+
 ### Data Source APIs
 * [Alpaca Trade API](https://alpaca.markets/docs/) - Internet brokerage
 * [NewsAPI](https://newsapi.org/) - NewsAPI locates articles and breaking news headlines from news sources and blogs across the web and returns them as JSON.
 * [Twitter API](https://developer.twitter.com/en/docs) - Twitter API enables programmatic access to Twitter.
+    * [tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API
 
 ### Machine Learning
 * [Tensorflow](https://www.tensorflow.org/) - an end-to-end open source platform for machine learning.
@@ -68,6 +76,17 @@ The following libraries are used:
 3. The service provides user with daily updates about the positions
     a. Buy, sell or hold recommendation
     b. What if scenario - “What if the user bought and held the positions”
+
+---
+# Database
+
+[Amazon RDS](https://aws.amazon.com/rds/) is utilized to store all the user data and machine learning models.
+
+
+---
+# Flask API
+
+
 
 ---
 
@@ -360,7 +379,7 @@ res = model.fit(X, y, epochs=50, batch_size=128, validation_split=0.1)
 ```
 
 ## Run model
-All of the aforemetioned tasks are run by calling the <code>build_model()</code> class method withing the MachineLearningModel class.
+All of the aforemetioned tasks are run by calling the <code>build_model()</code> class method within the MachineLearningModel class.
 
 ```python
 hist = model.build_model()
@@ -420,14 +439,16 @@ If the predicted price <code>14</code> days from now is higher than the current 
 ---
 
 # Sentiment Analysis
+Sentiment analysis is performed using the [Google Cloud Natural Language](https://cloud.google.com/natural-language) service. 
 
-* Natural Language Processing data source:
-    1. NewsAPI 
-    2. Twitter
-* Google Cloud Natural Language - Pre-trained model
-    * Get sentiment
-    * https://cloud.google.com/natural-language/docs/analyzing-sentiment
-* Fit model with new data daily provide user with probability of returns
+![gc_nlp](img/gc_nlp.png)
+
+The data utilized in sentiment analysis is obtained from 2 sources:
+
+1. [NewsAPI](https://newsapi.org/)
+2. [Tweepy](https://www.tweepy.org/)
+
+The sentiment analysis implementation:
 
 
 
