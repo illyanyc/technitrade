@@ -423,7 +423,7 @@ model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
 hist = model.fit(X, y, epochs=50, batch_size=128, validation_split=0.1)
 ```
 
-## Results
+## Training Results
 
 An example of model training results with conducted with The Coca-Cola Company stock : KO. 
 
@@ -440,6 +440,8 @@ Predictions are calculated with a <code>validater()</code> helper method.
 
 ![model_pred_KO](img/pred_prices_KO.png)
 
+
+
 ## Forecasting stock prices
 ### Implementation
 To forecast stock prices using the saved model, the application uses the <code>ForecastPrice</code> class located within the [<code>lstm_model</code>](code/ml/lsmt_model.py) module.
@@ -453,7 +455,7 @@ The application accomplished this by:
 3. Instantiating the <code>ForecastPrice</code> class with the technical data
 
 ```python
-forecast_model = lstm_model.ForecastPrice(ohlcv_df)
+forecast_model = lstm_model.ForecastPrice(tech_ind_df)
 ```
 
 4. Calling <code>forecast()</code> method within the <code>ForecastPrice</code> class
@@ -462,7 +464,33 @@ forecast_model = lstm_model.ForecastPrice(ohlcv_df)
 forecast = forecast_model.forecast()
 ```
 
-### Result
+### ForecastPrice.forecast() Description
+
+ForecastPrice class handles all of the forecasting functions. The <code>forecast()</code> class method implements the following methodology:
+
+1. Load model using <code>load_model</code> Keras method.
+
+```python
+from tensorflow.keras.models import load_model
+forecast_model = load_model("model.h5")
+```
+
+2. Pre-processes the data following the same methodology as MachineLearningModel class.
+
+3. Predicts the prices.
+
+```python
+forecasted_price = forecast_model.predict(tech_ind_df)
+```
+
+4. Inverse scale the prices.
+
+```python
+forecasted_price = scaler.inverse_transform(forecasted_price)[0]
+```
+
+
+## Forecast Result
 
 ![model_pred_KO](img/model_forecast_KO.png)
 
