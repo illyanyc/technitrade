@@ -266,7 +266,9 @@ where:<br>
 
 # Machine Learning Model
 
-## LSTM Model Overview
+LSTM (Long Short-Term Memory) model using Tensorflow and Keras is used. An example of the machine learning model code is provided in [<code>lstm_demo.ipynb</code>](code/ml/lstm_demo.ipynb) notebook.
+
+## LSTM Overview
 This application utilizes LSTM (Long Short-Term Memory) machine learning model. LSTM model was developed by Sepp Hochreiter and published in Neural Computation in 1997 [[Hochreiter 1997](https://dl.acm.org/doi/10.1162/neco.1997.9.8.1735)]. A common LSTM unit is composed of a cell, an input gate, an output gate and a forget gate. The cell remembers values over arbitrary time intervals and the three gates regulate the flow of information into and out of the cell [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory).
 
 ![lstm_cell](img/lstm_cell.png)
@@ -285,7 +287,8 @@ TensorFlow is an end-to-end open source platform for machine learning. It has a 
  
 Keras is an open-source software library that provides a Python interface for artificial neural networks. Keras acts as an interface for the TensorFlow library. Keras allows for easy implementation of Tensorflow methods without the need to build out complex machine learning infrastructure.
 
-## Data Acquisition
+## Implementation
+### Data Acquisition
 
 Data is acquired from Alpaca Trade API and processed using the [<code>technicals</code>](code/technicals/technicals.py) module. The resulting dataframe contains <code>Closing</code> price and all of the technical indicators. 
 
@@ -305,14 +308,31 @@ tech_ind = technicals.TechnicalAnalysis(ohlcv_df)
 tech_ind_df = tech_ind.get_all_technicals('ticker')
 ```
 
-## LSTM Model Attributes
+### LSTM model class
 
 The LSTM model is contained within the <code>MachineLearningModel</code> class located in the [<code>lstm_model</code>](code/ml/lsmt_model.py) module. The class must first me instantiated with a <code>pd.DataFrame</code> containing the technical analysis data.
 
 ```python
-model = lstm_model.MachineLearningModel(tech_ind_df)
+my_model = lstm_model.MachineLearningModel(tech_ind_df)
 ```
 
+### Build, fit and save model
+Building and fitting the model is done by calling the <code>build_model()</code> class method.
+
+```python
+hist = my_model.build_model()
+```
+
+The model is then saved as an <code>.h5</code> file.
+
+```python
+my_model.save_model('model.h5')
+```
+
+## MachineLearningModel.build_model() Description
+The <code>MachineLearningModel</code> is used to handle all machine learning methods. The <code>build_model()</code> class method, builds and fits the model. The class method implements the following methodology:
+
+### Model overview
 The LSTM model is programmed to look back <code>100</code> days to predict <code>14</code> days. The number of features is set by the shape of the DataFrame.
 
 ```python
@@ -320,9 +340,6 @@ n_steps_in = 100
 n_steps_out = 14
 n_features = tech_ind_df.shape[1]
 ```
-
-## MachineLearningModel Class Description
-The <code>MachineLearningModel</code> class implements the following methodology:
 
 ### Scaling
 A <code>RobustScaler</code> is used to scale the technical analysis data [[ScikitLearn](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html)].
@@ -376,7 +393,7 @@ model.add(LSTM(90,
                input_shape=(n_steps_in, n_features)))
 
 # hidden layers ...
-model.add(LSTM(n_nodes, activation=activation, return_sequences=True))
+model.add(LSTM(n_nodes, activation=activation_function, return_sequences=True))
 ```
 
 ### Optimzizer
@@ -403,20 +420,7 @@ The model is then compiled and fit.
 
 ```python
 model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
-res = model.fit(X, y, epochs=50, batch_size=128, validation_split=0.1)
-```
-
-## Run model
-All of the aforemetioned tasks are run by calling the <code>build_model()</code> class method within the MachineLearningModel class.
-
-```python
-hist = model.build_model()
-```
-
-The model is then saved as an <code>.h5</code> file.
-
-```python
-model.save_model('model.h5')
+hist = model.fit(X, y, epochs=50, batch_size=128, validation_split=0.1)
 ```
 
 ## Results
