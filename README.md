@@ -37,7 +37,7 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 
 # Application Logic
 
-![flowchart](img/flowchart.svg)
+![flowchart](img/flowchart.png)
 
 ---
 
