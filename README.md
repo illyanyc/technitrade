@@ -82,7 +82,7 @@ The following libraries are used:
 ---
 # Database
 
-<img src="img/postgresql_logo.svg" width=300>
+<img src="img/postgresql_logo.svg" width=300> 
 
 A [PostgreSQL](https://www.postgresql.org/) database hosted on [Amazon RDS](https://aws.amazon.com/rds/) is utilized to store all the user data and machine learning models. 
 
@@ -93,6 +93,10 @@ Amazon Relational Database Service (Amazon RDS) makes it easy to set up, operate
 PostgreSQL is a powerful, open source object-relational database system with over 30 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance.
 
 [pgAdmin](https://www.pgadmin.org/) was used for developement and debugging. pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL
+
+## Databse Shematics
+
+![databse_flowchart](img/database_flowchart.png)
 
 ---
 # Flask API
@@ -379,7 +383,7 @@ activation_function = tf.keras.activations.tanh
 ### Input and hidden layers
 LSTM input and hidden layers are utilized. [[TensorFlow](https://www.tensorflow.org/api_docs/python/tf/keras/layers/LSTM)]
 
-The input layer contains <code>90</code> nodes, while the hidden layers contain <code>30</code> nodes by default but can be set by the administrator to *n* arbitrary amount by setting the <code>n_nodes</code> variable. The number of hidden layers defauls to <code>1</code> but can also be modified by the administrator.
+The input layer contains <code>60</code> nodes, while the hidden layers contain <code>30</code> nodes by default but can be set by the administrator to *n* arbitrary amount by setting the <code>n_nodes</code> variable. The number of hidden layers defauls to <code>1</code> but can also be modified by the administrator.
 
 Hidden layers are added with a <code>add_hidden_layers()</code> helper function.
 
@@ -387,13 +391,22 @@ Hidden layers are added with a <code>add_hidden_layers()</code> helper function.
 n_nodes = 30
 
 # input layer
-model.add(LSTM(90, 
+model.add(LSTM(60, 
                activation=activation_function, 
                return_sequences=True, 
                input_shape=(n_steps_in, n_features)))
 
 # hidden layers ...
 model.add(LSTM(n_nodes, activation=activation_function, return_sequences=True))
+```
+
+### Dense alyers
+
+Two dense layers are used in the model. Dense layers are added using <code>add_dense_layers</code> class method.
+
+```python
+add_dense_layers(n_layers=1, n_out=30)
+add_dense_layers(n_layers=1, n_out=n_steps_out)
 ```
 
 ### Optimzizer
@@ -411,7 +424,7 @@ loss = tf.keras.losses.MeanSquaredError
 ```
 
 ### Other model parameters
-Model is trained for <code>50</code> epochs using <code>128</code> unit batch size. The validation split is <code>0.1</code>.
+Model is trained for <code>16</code> epochs using <code>128</code> unit batch size. The validation split is <code>0.1</code>.
 
 
 ### Compiling and fitting
@@ -420,7 +433,7 @@ The model is then compiled and fit.
 
 ```python
 model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
-hist = model.fit(X, y, epochs=50, batch_size=128, validation_split=0.1)
+hist = model.fit(X, y, epochs=16, batch_size=128, validation_split=0.1)
 ```
 
 ## Training Results

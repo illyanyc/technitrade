@@ -39,7 +39,7 @@ class MachineLearningModel:
                  n_out : int = 14,
                  n_layers : int = 1,
                  n_nodes : int = 30,
-                 epochs : int = 50,
+                 epochs : int = 16,
                  batch_size : int = 128,
                  validation_split : float = 0.1,
                  activation : str = "tanh",
@@ -236,7 +236,20 @@ class MachineLearningModel:
                     self.model.add(Dropout(drop_rate))
             except:
                 pass
+            
+    def add_dense_layers(self, n_layers : int, n_out : int):
+        '''
+        Creates a specific amount of Dense layers for the model
+        
+        Parameters
+        ----------
+        n_layers : int
+            number of layers to be added to the model    
+        '''
 
+        # creating the specified number of hidden layers with the specified number of nodes
+        for x in range(1,n_layers+1):
+            self.model.add(Dense(n_out))
             
     def validate(self):
         '''Vaildates predictions'''
@@ -353,10 +366,11 @@ class MachineLearningModel:
                                activation=self.activation)
 
         # add the last hidden layer
-        self.model.add(LSTM(30, activation=self.activation))
+        self.model.add(LSTM(60, activation=self.activation))
 
-        # add output layer
-        self.model.add(Dense(self.n_out))
+        # add output layers
+        self.add_dense_layers(n_layers=1, n_out=30)
+        self.add_dense_layers(n_layers=1, n_out=self.n_out)
 
         # compile the data
         self.model.compile(optimizer=self.optimizer, loss=self.loss, metrics=['accuracy'])
@@ -533,8 +547,7 @@ class ForecastPrice:
         # parse perdicted values to pd.DataFrame, adjust date scale (index)
         preds = pd.DataFrame(pred_y, 
                      index=pd.date_range(start=forecast_df.index[-1]+timedelta(days=1), 
-                                         periods=len(pred_y), 
-                                         freq="B"), 
+                                         periods=len(pred_y)), 
                      columns=[forecast_df.columns[0]])
         
         # set class variable
