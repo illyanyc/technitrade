@@ -46,23 +46,25 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 The following libraries are used:
 
 ### Data and Computation
-* [Numpy](https://numpy.org/) - "The fundamental package for scientific computing with Python"
-* [Pandas](https://pandas.pydata.org/) - data analysis and manipulation tool
+* [Numpy](https://numpy.org/) - "The fundamental package for scientific computing with Python".
+* [Pandas](https://pandas.pydata.org/) - data analysis and manipulation tool.
 
 ### Database
-* [boto3]
-* [prycopg2]
-* [configparser]
+* [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) - AWS SDK for Python (Boto3) to create, configure, and manage AWS services, such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Simple Storage Service (Amazon S3). The SDK provides an object-oriented API as well as low-level access to AWS services.
+* [prycopg2](https://www.psycopg.org/docs/) - PostgreSQL database adapter for the Python programming language.
 
 ### Data Source APIs
-* [Alpaca Trade API](https://alpaca.markets/docs/) - Internet brokerage
+* [Alpaca Trade API](https://alpaca.markets/docs/) - Internet brokerage and market data connection service.
 * [NewsAPI](https://newsapi.org/) - NewsAPI locates articles and breaking news headlines from news sources and blogs across the web and returns them as JSON.
 * [Twitter API](https://developer.twitter.com/en/docs) - Twitter API enables programmatic access to Twitter.
-    * [tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API
+    * [tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API.
 
 ### Machine Learning
 * [Tensorflow](https://www.tensorflow.org/) - an end-to-end open source platform for machine learning.
-* [Keras](https://keras.io/) - a deep learning API for Python
+* [Keras](https://keras.io/) - Python API used to interact with Tensorflow.
+
+### Technical Analysis Library
+* technitrade - a custom built library for technical analysis.
 
 
 ---
@@ -80,17 +82,29 @@ The following libraries are used:
 ---
 # Database
 
-[Amazon RDS](https://aws.amazon.com/rds/) is utilized to store all the user data and machine learning models.
+<img src="img/postgresql_logo.svg" width=300>
 
+A [PostgreSQL](https://www.postgresql.org/) database hosted on [Amazon RDS](https://aws.amazon.com/rds/) is utilized to store all the user data and machine learning models. 
+
+### Amazon RDS
+Amazon Relational Database Service (Amazon RDS) makes it easy to set up, operate, and scale a relational database in the cloud. It provides cost-efficient and resizable capacity while automating time-consuming administration tasks such as hardware provisioning, database setup, patching and backups. 
+
+### Postgres
+PostgreSQL is a powerful, open source object-relational database system with over 30 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance.
+
+[pgAdmin](https://www.pgadmin.org/) was used for developement and debugging. pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL
 
 ---
 # Flask API
 
+<img src="img/flask.png" width=200>
 
 
 ---
 
 # Technical Analysis
+
+<img src="img/logo.svg" width=300>
 
 Technical analysis is performed via <code>technicals</code> module. A demonstration of the module can be seen in <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
 
@@ -253,9 +267,23 @@ where:<br>
 # Machine Learning Model
 
 ## LSTM Model Overview
-This application utilizes LSTM (Long Short-Term Memory) machine learning model. LSTM model was developed by Sepp Hochreiter and published in Neural Computation in 1997 [[Hochreiter 1997](https://dl.acm.org/doi/10.1162/neco.1997.9.8.1735)]. A common LSTM unit is composed of a cell, an input gate, an output gate and a forget gate. The cell remembers values over arbitrary time intervals and the three gates regulate the flow of information into and out of the cell [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory). A common LSTM unit is composed of a cell, an input gate, an output gate and a forget gate.
+This application utilizes LSTM (Long Short-Term Memory) machine learning model. LSTM model was developed by Sepp Hochreiter and published in Neural Computation in 1997 [[Hochreiter 1997](https://dl.acm.org/doi/10.1162/neco.1997.9.8.1735)]. A common LSTM unit is composed of a cell, an input gate, an output gate and a forget gate. The cell remembers values over arbitrary time intervals and the three gates regulate the flow of information into and out of the cell [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory).
 
 ![lstm_cell](img/lstm_cell.png)
+
+## Machine Learning Libraries
+
+### Tensorflow
+
+<img src="img/tf.png" width=200>
+
+TensorFlow is an end-to-end open source platform for machine learning. It has a comprehensive, flexible ecosystem of tools, libraries and community resources that lets developers easily build and deploy ML powered applications.
+
+### Keras
+
+<img src="img/keras.png" width=200>
+ 
+Keras is an open-source software library that provides a Python interface for artificial neural networks. Keras acts as an interface for the TensorFlow library. Keras allows for easy implementation of Tensorflow methods without the need to build out complex machine learning infrastructure.
 
 ## Data Acquisition
 
@@ -290,7 +318,7 @@ The LSTM model is programmed to look back <code>100</code> days to predict <code
 ```python
 n_steps_in = 100
 n_steps_out = 14
-n_features = pd.DataFrame().shape[1]
+n_features = tech_ind_df.shape[1]
 ```
 
 ## MachineLearningModel Class Description
@@ -312,7 +340,7 @@ This Scaler removes the median and scales the data according to the quantile ran
 The dataframe is then parsed to <code>np.array</code> and spit into <code>X</code> and <code>y</code> subsets.
 
 ```python
-X, y = split_sequence(df.to_numpy(), n_steps_in, n_steps_out)
+X, y = split_sequence(tech_ind_df.to_numpy(), n_steps_in, n_steps_out)
 ```
 
 Where <code>split_sequence()</code> is a helper method that splits the multivariate time sequences.
@@ -339,7 +367,7 @@ The input layer contains <code>90</code> nodes, while the hidden layers contain 
 Hidden layers are added with a <code>add_hidden_layers()</code> helper function.
 
 ```python
-n_nodes = 1
+n_nodes = 30
 
 # input layer
 model.add(LSTM(90, 
