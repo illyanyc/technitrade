@@ -10,7 +10,7 @@ The content produced by this application is for informational purposes only, you
 
 The use of word  "opinion" or "recommendation" or any other word with a similar meaning, in this article, within the Technitrade application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
 
-This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect. 
+This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect.
 
 ---
 
@@ -94,7 +94,8 @@ The following libraries are used:
 
 # Interface
 
-User interfaces with the application using Amazon Lex Bot.
+User interfaces with the application using SMS enabled by Twilio service. Twilio service connects to AWS Lex Bot which handles all the conversation logig.
+
 Amazon Lex Bot gathers the following user info:
  
 1. Name
