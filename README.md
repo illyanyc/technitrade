@@ -10,7 +10,7 @@ The content produced by this application is for informational purposes only, you
 
 The use of word "recommendation", "opinion" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
 
-This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect.
+This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect. 
 
 ---
 
@@ -158,10 +158,12 @@ pip install google-cloud-language
 
 User interfaces with the application using Amazon Lex Bot.
 Amazon Lex Bot gathers the following user info:
-
+ 
 1. Name
 2. Email
 3. *n* number of portfolio stock tickers
+
+<img src="img/twilio_interface.png" width=40%>
 
 The user gets the News Sentiment, Twitter Sentiment, and Machine Learning AI Stock Opinion via periodic emails. The first email is received right after the Machine Learning model finished training and is fitted with data to predict future stock prices.
 
@@ -180,7 +182,7 @@ The resulting email looks something like this:
 ## Overview
 A Flask API was built in order to handle all tasks between the:
 
-1. Amazon Lex Bot
+1. Amazon Lex Bot via Lambda
 2. Data sources: Market Data Connection (see <code>[code/marketdata/]</code> folder), NewsAPI, Twitter API
 3. Technical Analysis module : [<code>technicals.py</code>](code/technicals/technicals.py)
 4. Machine Learning module : [<code>lstm_model.py</code>](code/ml/lstm_model.py)
