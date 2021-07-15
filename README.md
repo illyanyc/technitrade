@@ -22,7 +22,7 @@ This application was created solely to satisfy the requirements of Columbia Univ
 * [SQL Database](#sql-database)
 * [Interface](#interface)
 * [Technical Analysis](#technical-analysis)
-* [Machine Learning Model](#machine-learning)
+* [Machine Learning Model](#machine-learning-model)
 * [Sentiment Analysis](#sentiment-analysis)
 * [Team](#team)
 
