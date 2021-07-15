@@ -608,8 +608,10 @@ def GetSentimentAnalysisGoogle(text_content):
     type_ = language_v1.Document.Type.PLAIN_TEXT
     document = {'content': text_content, 'type_': type_}
     encoding_type = language_v1.EncodingType.UTF8
-    response = client.analyze_sentiment(request={'document': document, 'encoding_type': encoding_type})
-    return {'score' : response.document_sentiment.score , 'magnitude' : response.document_sentiment.magnitude}
+    response = client.analyze_sentiment(request={'document': document, 
+                                                 'encoding_type': encoding_type})
+    return {'score' : response.document_sentiment.score , 
+            'magnitude' : response.document_sentiment.magnitude}
 ```
 
 
