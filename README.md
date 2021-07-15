@@ -36,9 +36,10 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 
 **Demo Jupyter Notebooks**
 
-1. Technical Analysis Demo : <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
-2. Machine Learning Demo : <code>[lstm_demo.ipynb](code/ml/lstm_demo.ipynb)</code>
-3. Sentiment Analysis Demo : <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
+1. Technical Analysis Module Implementation Demo : <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
+2. Machine Learning Module Implementation Demo  : <code>[lstm_model_test.ipynb](code/ml/lstm_model_test.ipynb)</code>
+3. Machine Learning Step-by-Step Demo : <code>[lstm_demo.ipynb](code/ml/lstm_demo.ipynb)</code>
+4. Sentiment Analysis Demo : <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
 
 **Production Code**
 
@@ -472,15 +473,21 @@ n_features = tech_ind_df.shape[1]
 ```
 
 ### Scaling
-A <code>RobustScaler</code> is used to scale the technical analysis data [[ScikitLearn](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html)].
-
-```python
-sklearn.preprocessing.RobustScaler()
-```
+A <code>RobustScaler</code> is used to scale the technical analysis data [[ScikitLearn](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html)]. The scaler is a Scikit-Learn object : <code>sklearn.preprocessing.RobustScaler()</code>
 
 Scale features using statistics that are robust to outliers. 
 
 This Scaler removes the median and scales the data according to the quantile range (defaults to IQR: Interquartile Range). The IQR is the range between the 1st quartile (25th quantile) and the 3rd quartile (75th quantile). Centering and scaling happen independently on each feature by computing the relevant statistics on the samples in the training set. Median and interquartile range are then stored to be used on later data using the transform method. 
+
+```python
+scaler = RobustScaler()
+scaler.fit_transform(tech_ind_df)
+
+close_scaler = RobustScaler()
+close_scaler.fit(tech_ind_df[['close']])
+```
+
+Closing prices need their own scaler, because they will need to be inverse transformed via <code>close_scaler.inverse_transform()</code> later on, in order to visualize predicted Closing prices on the original scale.
 
 
 ### Parsing
@@ -561,6 +568,14 @@ model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
 hist = model.fit(X, y, epochs=16, batch_size=128, validation_split=0.1)
 ```
 
+### Model Storage
+The model is then saved as an <code>.h5</code> file, which is an extention for HDF5 file format developed by [HDF](https://www.hdfgroup.org/solutions/hdf5/). The format is designed to store large <code>numpy</code> arrays. 
+
+The models are stored in Amazon S3.
+
+![stored_models](img/saved_model.png)
+
+
 ## Training Results
 
 An example of model training results with conducted with The Coca-Cola Company stock : KO. 
@@ -577,6 +592,8 @@ An example of model training results with conducted with The Coca-Cola Company s
 Predictions are calculated with a <code>validator()</code> helper method.
 
 ![model_pred_KO](img/pred_prices_KO.png)
+
+
 
 
 ## Forecasting stock prices
