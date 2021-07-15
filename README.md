@@ -6,11 +6,11 @@
 
 :warning:   NOT INVESTMENT ADVICE   :warning:
 
-The content produced by this application is for informational purposes only, you should not construe any such information or other material as legal, tax, investment, financial, or other advice. Nothing contained in this article, Git Repo or within the output produced by this application constitutes a solicitation, recommendation, endorsement, or offer by any member involved working on this project, any company they represent or any third party service provider to buy or sell any securities or other financial instruments in this or in in any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such jurisdiction.
+The content produced by this application is for informational purposes only, you should not construe any such information or other material as legal, tax, investment, financial, or other advice. Nothing contained in this article, Git Repo or withing the output produced by this application constitutes a solicitation, recommendation, endorsement, or offer by any member involved working on this project, any company they represent or any third party service provider to buy or sell any securities or other financial instruments in this or in in any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such jurisdiction. 
 
-The use of word "recommendation" or any other word with a similar meaning, in this article, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to to buy or sell any securities or other financial instruments!
+The use of word "recommendation" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to to buy or sell any securities or other financial instruments!
 
-This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect.
+This appliation was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect.
 
 ---
 
@@ -600,18 +600,16 @@ The sentiment analysis implementation:
 
 ```python
 from google.cloud import language_v1
+from google.oauth2.credentials import Credentials
 
-client = language_v1.LanguageServiceClient()
-type_ = language_v1.Document.Type.PLAIN_TEXT
-
-document = {'content' : text_content, 'type_' : type_}
-
-encoding_type = language_v1.EncodingType.UTF8
-
-response = client.analyze_sentiment(requests={'document' : document, 
-                                              'encoding_type' : encoding_type})
-
-score = response.document_sentiment.score
+def GetSentimentAnalysisGoogle(text_content):
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '../your_credentials_file.json'
+    client = language_v1.LanguageServiceClient()
+    type_ = language_v1.Document.Type.PLAIN_TEXT
+    document = {'content': text_content, 'type_': type_}
+    encoding_type = language_v1.EncodingType.UTF8
+    response = client.analyze_sentiment(request={'document': document, 'encoding_type': encoding_type})
+    return {'score' : response.document_sentiment.score , 'magnitude' : response.document_sentiment.magnitude}
 ```
 
 
