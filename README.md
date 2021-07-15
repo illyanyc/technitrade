@@ -35,12 +35,19 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 
 
 **Demo Jupyter Notebooks**
+
 1. Technical Analysis Demo : <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
 2. Machine Learning Demo : <code>[lstm_demo.ipynb](code/ml/lstm_demo.ipynb)</code>
 3. Sentiment Analysis Demo : <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
 
 **Production Code**
-Production API, Application and Infrastructure code, along with a Docker container can be found here: [<code>code/api/</code>](https://github.com/illyanyc/technitrade/tree/main/code/api)
+
+* Flask API
+* Application (Production Machine Learning LSTM model, Sentiment Analysis, etc. )
+* Infrastructure 
+* Docker container 
+
+Can all be found here: [<code>code/api/</code>](https://github.com/illyanyc/technitrade/tree/main/code/api)
 
 ---
 
