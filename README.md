@@ -8,7 +8,7 @@
 
 The content produced by this application is for informational purposes only, you should not construe any such information or other material as legal, tax, investment, financial, or other advice. Nothing contained in this article, Git Repo or withing the output produced by this application constitutes a solicitation, recommendation, endorsement, or offer by any member involved working on this project, any company they represent or any third party service provider to buy or sell any securities or other financial instruments in this or in in any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such jurisdiction. 
 
-The use of word "recommendation", "opinion" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
+The use of word "opinion"  any other word with a similar meaning in this article, within the application, or within information produced by the application (including notification emails) is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
 
 This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect.
 
