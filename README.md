@@ -65,89 +65,25 @@ The following libraries are used:
 ### Data Computation and Visualization
 * [Numpy](https://numpy.org/) - "The fundamental package for scientific computing with Python".
 * [Pandas](https://pandas.pydata.org/) - data analysis and manipulation tool.
-
-```python
-pip install pandas
-```
-
 * [Matplotlib](https://matplotlib.org/) - Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python.
-
-```python
-pip install matplotlib
-```
 
 ### Database
 * [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) - AWS SDK for Python to create, configure, and manage AWS services, such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Simple Storage Service (Amazon S3). The SDK provides an object-oriented API as well as low-level access to AWS services.
-
-```python
-pip install boto3
-```
-
 * [psycopg2](https://www.psycopg.org/docs/) - PostgreSQL database adapter for the Python programming language.
-
-```python
-pip install psycopg2
-```
 
 ### Data Source APIs
 * [Dotenv](https://pypi.org/project/python-dotenv/) - python-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
-
-```python
-pip install python-dotenv
-```
-
 * [Alpaca Trade API](https://alpaca.markets/docs/) - Internet brokerage and market data connection service.
-
-```python
-pip install alpaca-trade-api
-```
-
 * [NewsAPI](https://newsapi.org/) - NewsAPI locates articles and breaking news headlines from news sources and blogs across the web and returns them as JSON.
-
-```python
-pip install newsapi-python
-```
-
 * [Twitter API](https://developer.twitter.com/en/docs) - Twitter API enables programmatic access to Twitter.
     * [tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API.
-    
-```python
-pip install tweepy
-```
 
 ### Machine Learning
 * [Scikit-Learn](https://scikit-learn.org/stable/) - Machine learning library for python
-
-```python
-pip install scikit-learn
-```
-
 * [Tensorflow](https://www.tensorflow.org/) - an end-to-end open source platform for machine learning.
-
-```python
-pip install tensorflow
-```
-
 * [Keras](https://keras.io/) - Python API used to interact with Tensorflow.
-
-```python
-pip install keras
-```
-
 * [NLTK](https://www.nltk.org/) - NLTK is a leading platform for building Python programs to work with human language data.
-
-```python
-pip install nltk
-```
-
-* [Google Cloud language_v1](https://cloud.google.com/natural-language/docs/apis) - an API that connects to Google Cloud Natural Language
-
-```python
-pip install google-cloud-language
-```
-
-### Technical Analysis Library
-* technitrade - a custom built library for technical analysis.
+* [Google Cloud API](https://cloud.google.com/natural-language/docs/apis) - an API that connects to Google Cloud Natural Language
 
 ### Other Development Frameworks
 * [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Flask is a micro web framework written in Python.
