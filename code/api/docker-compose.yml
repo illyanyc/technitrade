@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  project2api:
+    image: project2api
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      TZ: America/New_York
+    ports:
+      - "80:80"
+    networks:
+      - project2api-network
+networks:
+    project2api-network:
+        driver: bridge
