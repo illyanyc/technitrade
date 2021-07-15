@@ -5,7 +5,7 @@ from sendgrid.helpers.mail import *
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = 'xxxxxxxxxxx'
 
 
 def SendEmail(name,email,list_user_portfolio_result):

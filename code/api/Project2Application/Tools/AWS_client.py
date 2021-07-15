@@ -10,8 +10,8 @@ import os.path
 
 def upload_to_aws(path):
     file_name = os.path.basename(path)
-    s3 = bt.client('s3', aws_access_key_id='AKIAV2NF5UG4HBO6JF6Z',
-                      aws_secret_access_key='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')
+    s3 = bt.client('s3', aws_access_key_id='xxxxxx',
+                      aws_secret_access_key='xxxxxx')
     try:
         s3.upload_file(str(path), 'project2-models', file_name , ExtraArgs={'ACL': 'public-read'})
         return f'https://project2-models.s3.amazonaws.com/{file_name}'
@@ -23,8 +23,8 @@ def upload_to_aws(path):
 def download_from_aws(file_name,destination_path):
     s3_client = bt.client('s3')
     s3 = bt.resource('s3',
-                     aws_access_key_id='AKIAV2NF5UG4HBO6JF6Z',
-                     aws_secret_access_key='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')
+                     aws_access_key_id='xxxxxxx',
+                     aws_secret_access_key='xxxxxxxx')
     s3.Bucket('project2-models').download_file(file_name, destination_path)
 
 
