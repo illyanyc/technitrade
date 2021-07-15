@@ -9,10 +9,10 @@ from google.oauth2.credentials import Credentials
 from pathlib import Path
 import tweepy
 
-consumer_key = 'rT3HjmQOVzNQNbmEHyk7Shm11'
-consumer_secret = 'tKbpKi8G2AdOlZsKPToJI61y0vcZFWvhn6xBd0SF2fpW94Cf5l'
-access_token = '1399910083308445698-SuiofGqMv05DHN9gOx02hnvhJNTa5I'
-access_token_secret = 'yXSZKxbQEvylJiYa22dhLYEmtCWoDk2jwEfAGwcPPdgYy'
+consumer_key = 'xxxxxxxxxx'
+consumer_secret = 'xxxxxxxxxxxxx'
+access_token = 'xxxxxxxxx'
+access_token_secret = 'xxxxxxxxxx'
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, wait_on_rate_limit=True)

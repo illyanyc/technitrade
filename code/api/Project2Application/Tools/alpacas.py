@@ -23,8 +23,8 @@ def load_api_keys(api_path: str = 'api_keys.env',
     load_dotenv(api_path)
 
     # set Alpaca API key and secret
-    alpaca_api_key = 'PKPVNYCI99P4BO4UR76W'
-    alpaca_secret_key = 'njpB50wHS3xfmFqFutenCqDIcSm6L665BXs5wCc8'
+    alpaca_api_key = 'xxxxxxx'
+    alpaca_secret_key = 'xxxxxxx'
 
     if debug:
         print(f"Testing Apaca Trade API key by data type:")
