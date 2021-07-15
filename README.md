@@ -8,9 +8,9 @@
 
 The content produced by this application is for informational purposes only, you should not construe any such information or other material as legal, tax, investment, financial, or other advice. Nothing contained in this article, Git Repo or withing the output produced by this application constitutes a solicitation, recommendation, endorsement, or offer by any member involved working on this project, any company they represent or any third party service provider to buy or sell any securities or other financial instruments in this or in in any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such jurisdiction. 
 
-The use of word "recommendation", "opinion" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to to buy or sell any securities or other financial instruments!
+The use of word "recommendation", "opinion" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
 
-This appliation was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect.
+This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect.
 
 ---
 
@@ -20,7 +20,7 @@ This appliation was created solely to satisfy the requirements of Columbia Unive
 * [Libraries](#libraries)
 * [Flask API](#flask-api)
 * [Database](#database)
-* [Interface](#aws-interface)
+* [Interface](#interface)
 * [Technical Analysis](#technical-analysis)
 * [Machine Learning Model](#machine-learning)
 * [Sentiment Analysis](#sentiment-analysis)
@@ -29,7 +29,7 @@ This appliation was created solely to satisfy the requirements of Columbia Unive
 ---
 # Overview
 
-Technitrade lets user track a portfolio of stocks, periodically getting News Sentiment, Twitter Sentiment, and Machine Learning AI Stock Opinion. The machine learning model calculates "opinion" based on market data and technical analysis, while the investor sentiment calculated by natural langualge processing analysis of recent news articles and Tweets.
+Technitrade lets user track a portfolio of stocks, periodically getting News Sentiment, Twitter Sentiment, and Machine Learning AI Stock Opinion. The machine learning model calculates "opinion" based on market data and technical analysis, while the investor sentiment calculated by natural language processing analysis of recent news articles and Tweets.
 
 The user interacts with the program via an [Amazon Lex chatbot](#aws-interface). The machine learning analysis is performed using [LSTM (Long Short-Term Memory) model](#machine-learning). The model is trained on [technical analysis indicators](#technical-analysis). Sentiment analysis is performed by [Google Cloud Natural Language](#sentiment-analysis) using NewsAPI and Twitter APIs as data source.
 
@@ -38,6 +38,10 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 1. Technical Analysis Demo : <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
 2. Machine Learning Demo : <code>[lstm_demo.ipynb](code/ml/lstm_demo.ipynb)</code>
 3. Sentiment Analysis Demo : <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
+
+**Production Code**
+Production code is stores as a docker container here: [<code>code/api/</code>](https://github.com/illyanyc/technitrade/tree/main/code/api)
+
 ---
 
 # Application Logic
@@ -71,7 +75,7 @@ pip install matplotlib
 pip install boto3
 ```
 
-* [prycopg2](https://www.psycopg.org/docs/) - PostgreSQL database adapter for the Python programming language.
+* [psycopg2](https://www.psycopg.org/docs/) - PostgreSQL database adapter for the Python programming language.
 
 ```python
 pip install psycopg2
@@ -137,20 +141,22 @@ pip install google-cloud-language
 ### Technical Analysis Library
 * technitrade - a custom built library for technical analysis.
 
-### Other Developement Frameworks
+### Other Development Frameworks
 * [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Flask is a micro web framework written in Python.
 * [AWS Lex Bot](https://aws.amazon.com/lex/) - Amazon Lex is a service for building conversational interfaces into any application using voice and text. 
-* [Twilio SendGrid](https://sendgrid.com/) - communication platform for transactional and marketing email
+* [Twilio SendGrid](https://sendgrid.com/) - communication platform for transactional and marketing email.
 ---
 
 # Interface
 
-User interfaces with the application using Amazon Lex Bot:
+User interfaces with the application using Amazon Lex Bot.
+Amazon Lex Bot gathers the following user info:
 
-1. 
+1. Name
+2. Email
+3. *n* number of portfolio stock tickers
 
-
-The user gets the News Sentiment, Twitter Sentiment, and Machine Learning AI Stock Opinion via peredioc emails. The first email is received right after the Machine Learning model finished training. 
+The user gets the News Sentiment, Twitter Sentiment, and Machine Learning AI Stock Opinion via periodic emails. The first email is received right after the Machine Learning model finished training and is fitted with data to predict future stock prices.
 
 The emails are distributed via Twilio's SendGrid service.
 
@@ -174,13 +180,13 @@ A Flask API was built in order to handle all tasks between the:
 5. Sentiment Analysis service
 6. Amazon RDS PostgreSQL server
 
-All events are triggered by AWS Cloudwatch
+All events are triggered by AWS Cloudwatch. AWS Lambda function handle all of the production python code.
 
-The docker container with Flask API services can be viewed here: 
+The docker container with Flask API services and production code can be viewed here 
 
 ## Flask API steps
 
-The steps by which the Flask API excecutes application workflow is outlines in the table below.
+The steps by which the Flask API executes application workflow is outlines in the table below.
 
 |   | Objective        | Action                                | Trigger                     |
 |---|------------------|---------------------------------------|-----------------------------|
@@ -196,7 +202,10 @@ The steps by which the Flask API excecutes application workflow is outlines in t
 
 <img src="img/postgresql_logo.svg" width=300> 
 
+## Database Overview
 A [PostgreSQL](https://www.postgresql.org/) database hosted on [Amazon RDS](https://aws.amazon.com/rds/) is utilized to store all the user data and machine learning models. 
+
+All database code can be viewed here: [<code>code/src/</code>](https://github.com/illyanyc/technitrade/tree/main/code/src)
 
 ### Amazon RDS
 Amazon Relational Database Service (Amazon RDS) makes it easy to set up, operate, and scale a relational database in the cloud. It provides cost-efficient and resizable capacity while automating time-consuming administration tasks such as hardware provisioning, database setup, patching and backups. 
@@ -204,17 +213,16 @@ Amazon Relational Database Service (Amazon RDS) makes it easy to set up, operate
 ### Postgres
 PostgreSQL is a powerful, open source object-relational database system with over 30 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance.
 
-[pgAdmin](https://www.pgadmin.org/) was used for developement and debugging. pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL
+[psycopg2](https://www.psycopg.org/docs/) was used to interface python with PostgreSQL database.
+[pgAdmin](https://www.pgadmin.org/) was used for testing and debugging. 
 
-## Databse Shematics
+## Database Schematics
 
-![databse_flowchart](img/database_flowchart.png)
+![database_flowchart](img/database_flowchart.png)
 
 ---
 
 # Technical Analysis
-
-<img src="img/logo.svg" width=300>
 
 Technical analysis is performed via <code>technicals</code> module. A demonstration of the module can be seen in <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
 
@@ -275,12 +283,12 @@ The money flow index (MFI) is an oscillator that ranges from 0 to 100. It is use
 </details>
 
 
-### Stoichastic Oscillator
+### Stochastic Oscillator
 
 The stochastic oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time. The sensitivity of the oscillator to market movements is reducible by adjusting that time period or by taking a moving average of the result. It is used to generate overbought and oversold trading signals, utilizing a 0–100 bounded range of values. [[Investopedia](https://www.investopedia.com/terms/s/stochasticoscillator.asp)]
 
 <details>
-<summary> Stoichastic Oscillator Equation
+<summary> Stochastic Oscillator Equation
 </summary>  
 <br>
     <img src="img/equation_stoch.svg">
@@ -376,7 +384,7 @@ where:<br>
 
 # Machine Learning Model
 
-LSTM (Long Short-Term Memory) model using Tensorflow and Keras is used. An example of the machine learning model code is provided in [<code>lstm_demo.ipynb</code>](code/ml/lstm_demo.ipynb) notebook.
+LSTM (Long Short-Term Memory) model using TensorFlow and Keras is used. An example of the machine learning model code is provided in [<code>lstm_demo.ipynb</code>](code/ml/lstm_demo.ipynb) notebook.
 
 ## LSTM Overview
 This application utilizes LSTM (Long Short-Term Memory) machine learning model. LSTM model was developed by Sepp Hochreiter and published in Neural Computation in 1997 [[Hochreiter 1997](https://dl.acm.org/doi/10.1162/neco.1997.9.8.1735)]. A common LSTM unit is composed of a cell, an input gate, an output gate and a forget gate. The cell remembers values over arbitrary time intervals and the three gates regulate the flow of information into and out of the cell [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory).
@@ -385,7 +393,7 @@ This application utilizes LSTM (Long Short-Term Memory) machine learning model. 
 
 ## Machine Learning Libraries
 
-### Tensorflow
+### TensorFlow
 
 <img src="img/tf.png" width=200>
 
@@ -395,12 +403,12 @@ TensorFlow is an end-to-end open source platform for machine learning. It has a 
 
 <img src="img/keras.png" width=200>
  
-Keras is an open-source software library that provides a Python interface for artificial neural networks. Keras acts as an interface for the TensorFlow library. Keras allows for easy implementation of Tensorflow methods without the need to build out complex machine learning infrastructure.
+Keras is an open-source software library that provides a Python interface for artificial neural networks. Keras acts as an interface for the TensorFlow library. Keras allows for easy implementation of TensorFlow methods without the need to build out complex machine learning infrastructure.
 
 ## Implementation
 ### Data Acquisition
 
-Data is acquired from Alpaca Trade API and processed using the [<code>technicals</code>](code/technicals/technicals.py) module. The resulting dataframe contains <code>Closing</code> price and all of the technical indicators. 
+Data is acquired from Alpaca Trade API and processed using the [<code>technicals</code>](code/technicals/technicals.py) module. The resulting DataFrame contains <code>Closing</code> price and all of the technical indicators. 
 
 The market data is obtained by calling the <code>ohlcv()</code> method within the [<code>alpaca</code>](code/marketdata/alpaca.py) module. The methods takes a <code>list</code> of tickers, as well as the <code>start_data</code> and <code>end_date</code>, and returns a <code>pd.DataFrame</code>.
 
@@ -464,7 +472,7 @@ This Scaler removes the median and scales the data according to the quantile ran
 
 
 ### Parsing
-The dataframe is then parsed to <code>np.array</code> and spit into <code>X</code> and <code>y</code> subsets.
+The DataFrame is then parsed to <code>np.array</code> and spit into <code>X</code> and <code>y</code> subsets.
 
 ```python
 X, y = split_sequence(tech_ind_df.to_numpy(), n_steps_in, n_steps_out)
@@ -479,7 +487,7 @@ Where <code>split_sequence()</code> is a helper method that splits the multivari
 model = tf.keras.Sequential()
 ```
 
-### Activation funcation
+### Activation function
 A hyperbolic tangent activation function is used : <code>tanh</code>[[TensorFlow](https://www.tensorflow.org/api_docs/python/tf/keras/activations/tanh)]
 
 ```python
@@ -489,7 +497,7 @@ activation_function = tf.keras.activations.tanh
 ### Input and hidden layers
 LSTM input and hidden layers are utilized. [[TensorFlow](https://www.tensorflow.org/api_docs/python/tf/keras/layers/LSTM)]
 
-The input layer contains <code>60</code> nodes, while the hidden layers contain <code>30</code> nodes by default but can be set by the administrator to *n* arbitrary amount by setting the <code>n_nodes</code> variable. The number of hidden layers defauls to <code>1</code> but can also be modified by the administrator.
+The input layer contains <code>60</code> nodes, while the hidden layers contain <code>30</code> nodes by default but can be set by the administrator to *n* arbitrary amount by setting the <code>n_nodes</code> variable. The number of hidden layers default to <code>1</code> but can also be modified by the administrator.
 
 Hidden layers are added with a <code>add_hidden_layers()</code> helper function.
 
@@ -506,7 +514,7 @@ model.add(LSTM(60,
 model.add(LSTM(n_nodes, activation=activation_function, return_sequences=True))
 ```
 
-### Dense alyers
+### Dense layers
 
 Two dense layers are used in the model. Dense layers are added using <code>add_dense_layers</code> class method.
 
@@ -514,8 +522,8 @@ Two dense layers are used in the model. Dense layers are added using <code>add_d
 model.add(Dense(30))
 ```
 
-### Optimzizer
-The model uses Adam optimzer (short for Adaptive Moment Estimation) [[TensorFlow]((https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/Adam))]. Adam is a stochastic gradient descent method that is based on adaptive estimation of first-order and second-order moments. Adam optimzier was developed by Diederik Kingma and Jimmy Ba and published in 2014 [[Kingma et. al. 2014](https://arxiv.org/pdf/1412.6980.pdf)]. Adam optimizer is defined by its creators as "an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments."
+### Optimizer
+The model uses Adam optimizer (short for Adaptive Moment Estimation) [[TensorFlow]((https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/Adam))]. Adam is a stochastic gradient descent method that is based on adaptive estimation of first-order and second-order moments. Adam optimizer was developed by Diederik Kingma and Jimmy Ba and published in 2014 [[Kingma et. al. 2014](https://arxiv.org/pdf/1412.6980.pdf)]. Adam optimizer is defined by its creators as "an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments."
 
 ```python
 optimizer = tf.keras.optimizers.Adam
@@ -554,10 +562,9 @@ An example of model training results with conducted with The Coca-Cola Company s
 ![model_loss_KO](img/model_loss_KO.png)
 
 ### Predictions
-Predictions are calculated with a <code>validater()</code> helper method.
+Predictions are calculated with a <code>validator()</code> helper method.
 
 ![model_pred_KO](img/pred_prices_KO.png)
-
 
 
 ## Forecasting stock prices
@@ -569,7 +576,7 @@ The module pre-processes the date using the aforementioned methods and then util
 The application accomplished this by:
 
 1. Getting stock prices for past <code>200</code> days using <code>alpaca</code> module
-2. Getting technical indicators usign the <code>get_all_technicals()</code> method withing the <code>technicals.TechnicalAnalysis</code> class
+2. Getting technical indicators using the <code>get_all_technicals()</code> method withing the <code>technicals.TechnicalAnalysis</code> class
 3. Instantiating the <code>ForecastPrice</code> class with the technical data
 
 ```python
@@ -612,7 +619,7 @@ forecasted_price = scaler.inverse_transform(forecasted_price)[0]
 
 ![model_pred_KO](img/model_forecast_KO.png)
 
-If the predicted price <code>14</code> days from now is higher than the current price, the application will issue a buy "recommentaion", if the price is lower that the current price it will issue a sell "recommentaion" on the date of the highest predicted price.
+If the predicted price <code>14</code> days from now is higher than the current price, the application will issue a buy "opinion", if the price is lower that the current price it will issue a sell "opinion" on the date of the highest predicted price.
 
 ---
 
@@ -626,7 +633,7 @@ The data utilized in sentiment analysis is obtained from 2 sources:
 1. [NewsAPI](https://newsapi.org/)
 2. [Tweepy](https://www.tweepy.org/)
 
-Implemetation of NewsAPI and Tweepy can be found in the demo notebook: <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
+Implementation of NewsAPI and Tweepy can be found in the demo notebook: <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
 
 The sentiment analysis implementation:
 
