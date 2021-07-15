@@ -8,7 +8,7 @@
 
 The content produced by this application is for informational purposes only, you should not construe any such information or other material as legal, tax, investment, financial, or other advice. Nothing contained in this article, Git Repo or withing the output produced by this application constitutes a solicitation, recommendation, endorsement, or offer by any member involved working on this project, any company they represent or any third party service provider to buy or sell any securities or other financial instruments in this or in in any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such jurisdiction. 
 
-The use of word "recommendation" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to to buy or sell any securities or other financial instruments!
+The use of word "recommendation", "opinion" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to to buy or sell any securities or other financial instruments!
 
 This appliation was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect.
 
@@ -18,9 +18,9 @@ This appliation was created solely to satisfy the requirements of Columbia Unive
 * [Overview](#overview)
 * [Application Logic](#application-logic)
 * [Libraries](#libraries)
-* [Database](#database)
 * [Flask API](#flask-api)
-* [AWS Interface](#aws-interface)
+* [Database](#database)
+* [Interface](#aws-interface)
 * [Technical Analysis](#technical-analysis)
 * [Machine Learning Model](#machine-learning)
 * [Sentiment Analysis](#sentiment-analysis)
@@ -29,7 +29,7 @@ This appliation was created solely to satisfy the requirements of Columbia Unive
 ---
 # Overview
 
-Technitrade lets user track a portfolio of stocks, periodically getting buy, sell, or hold recommendations based on analysis performed by machine learning models and investor sentiment calculated by natural langualge processing analysis of recent news articles and Tweets.
+Technitrade lets user track a portfolio of stocks, periodically getting News Sentiment, Twitter Sentiment, and Machine Learning AI Stock Opinion. The machine learning model calculates "opinion" based on market data and technical analysis, while the investor sentiment calculated by natural langualge processing analysis of recent news articles and Tweets.
 
 The user interacts with the program via an [Amazon Lex chatbot](#aws-interface). The machine learning analysis is performed using [LSTM (Long Short-Term Memory) model](#machine-learning). The model is trained on [technical analysis indicators](#technical-analysis). Sentiment analysis is performed by [Google Cloud Natural Language](#sentiment-analysis) using NewsAPI and Twitter APIs as data source.
 
@@ -139,18 +139,57 @@ pip install google-cloud-language
 
 ### Other Developement Frameworks
 * [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Flask is a micro web framework written in Python.
-* [AWS Lex Bot]
+* [AWS Lex Bot](https://aws.amazon.com/lex/) - Amazon Lex is a service for building conversational interfaces into any application using voice and text. 
+* [Twilio SendGrid](https://sendgrid.com/) - communication platform for transactional and marketing email
 ---
 
-# AWS Interface
+# Interface
 
-1. User provides the service with 10 stocks to track.
-2. The service prepares and trains machine learning models for the stock data.
-    a. Technical Indicator Backtests 
-    b. Sentiment Analysis - Natural Language Processing
-3. The service provides user with daily updates about the positions
-    a. Buy, sell or hold recommendation
-    b. What if scenario - “What if the user bought and held the positions”
+User interfaces with the application using Amazon Lex Bot:
+
+1. 
+
+
+The user gets the News Sentiment, Twitter Sentiment, and Machine Learning AI Stock Opinion via peredioc emails. The first email is received right after the Machine Learning model finished training. 
+
+The emails are distributed via Twilio's SendGrid service.
+
+The resulting email looks something like this:
+
+![result_email](img/result.png) 
+
+
+---
+# Flask API
+
+<img src="img/flask.png" width=200>
+
+## Overview
+A Flask API was built in order to handle all tasks between the:
+
+1. Amazon Lex Bot
+2. Data sources: Market Data Connection (see <code>[code/marketdata/]</code> folder), NewsAPI, Twitter API
+3. Technical Analysis module : [<code>technicals.py</code>](code/technicals/technicals.py)
+4. Machine Learning module : [<code>lstm_model.py</code>](code/ml/lstm_model.py)
+5. Sentiment Analysis service
+6. Amazon RDS PostgreSQL server
+
+All events are triggered by AWS Cloudwatch
+
+The docker container with Flask API services can be viewed here: 
+
+## Flask API steps
+
+The steps by which the Flask API excecutes application workflow is outlines in the table below.
+
+|   | Objective        | Action                                | Trigger                     |
+|---|------------------|---------------------------------------|-----------------------------|
+| 1 | User Data        | User & Portfolio Creation             | Amazon LEX                  |
+| 2 | Model - Training | Trigger the API to run the training   | Lambda / CloudWatch         |
+| 3 | Model - Training | Save the model in Amazon S3           | API                         |
+| 4 | Model - Forecast | Forecast the tickers                  | Lambda / CloudWatch /   API |
+| 5 | User Data        | Update the user portfolio             | Lambda / CloudWatch /   API |
+| 6 | User Data        | Send email to the users               | Lambda / CloudWatch /   API |
 
 ---
 # Database
@@ -170,12 +209,6 @@ PostgreSQL is a powerful, open source object-relational database system with ove
 ## Databse Shematics
 
 ![databse_flowchart](img/database_flowchart.png)
-
----
-# Flask API
-
-<img src="img/flask.png" width=200>
-
 
 ---
 
@@ -478,8 +511,7 @@ model.add(LSTM(n_nodes, activation=activation_function, return_sequences=True))
 Two dense layers are used in the model. Dense layers are added using <code>add_dense_layers</code> class method.
 
 ```python
-add_dense_layers(n_layers=1, n_out=30)
-add_dense_layers(n_layers=1, n_out=n_steps_out)
+model.add(Dense(30))
 ```
 
 ### Optimzizer
