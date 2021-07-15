@@ -40,7 +40,7 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 3. Sentiment Analysis Demo : <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
 
 **Production Code**
-Production code is stores as a docker container here: [<code>code/api/</code>](https://github.com/illyanyc/technitrade/tree/main/code/api)
+Production API, Application and Infrastructure code, along with a Docker container can be found here: [<code>code/api/</code>](https://github.com/illyanyc/technitrade/tree/main/code/api)
 
 ---
 
@@ -182,7 +182,12 @@ A Flask API was built in order to handle all tasks between the:
 
 All events are triggered by AWS Cloudwatch. AWS Lambda function handle all of the production python code.
 
-The docker container with Flask API services and production code can be viewed here 
+* Flask API services can he found here: [<code>Project2API</code>](https://github.com/illyanyc/technitrade/tree/main/code/api/Project2API)
+
+* Project Application code can be found here: [<code>Project2Application</code>](https://github.com/illyanyc/technitrade/tree/main/code/api/Project2Application)
+
+* Project Infrastructure code can be found here: [<code>Project2Infrastructure</code>](https://github.com/illyanyc/technitrade/tree/main/code/api/Project2Infrastructure)
+
 
 ## Flask API steps
 
