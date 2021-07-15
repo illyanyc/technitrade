@@ -50,6 +50,7 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 
 Can all be found here: [<code>code/api/</code>](https://github.com/illyanyc/technitrade/tree/main/code/api)
 
+* Lambda file is available here: <code>[lambda.py](code/lambda/lambda.py)</code>
 ---
 
 # Application Logic
@@ -132,6 +133,7 @@ All events are triggered by AWS Cloudwatch. AWS Lambda function handle all of th
 
 * Project Infrastructure code can be found here: [<code>Project2Infrastructure</code>](https://github.com/illyanyc/technitrade/tree/main/code/api/Project2Infrastructure)
 
+* Lambda file is available here: <code>[lambda.py](code/lambda/lambda.py)</code>
 
 ## Flask API steps
 
