@@ -8,7 +8,7 @@
 
 The content produced by this application is for informational purposes only, you should not construe any such information or other material as legal, tax, investment, financial, or other advice. Nothing contained in this article, Git Repo or withing the output produced by this application constitutes a solicitation, recommendation, endorsement, or offer by any member involved working on this project, any company they represent or any third party service provider to buy or sell any securities or other financial instruments in this or in in any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such jurisdiction. 
 
-The use of word "opinion"  any other word with a similar meaning in this article, within the application, or within information produced by the application (including notification emails) is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
+The use of word "recommendation", "opinion" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
 
 This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect. 
 
@@ -36,10 +36,9 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 
 **Demo Jupyter Notebooks**
 
-1. Technical Analysis Module Implementation Demo : <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
-2. Machine Learning Module Implementation Demo  : <code>[lstm_model_test.ipynb](code/ml/lstm_model_test.ipynb)</code>
-3. Machine Learning Step-by-Step Demo : <code>[lstm_demo.ipynb](code/ml/lstm_demo.ipynb)</code>
-4. Sentiment Analysis Demo : <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
+1. Technical Analysis Demo : <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
+2. Machine Learning Demo : <code>[lstm_demo.ipynb](code/ml/lstm_demo.ipynb)</code>
+3. Sentiment Analysis Demo : <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
 
 **Production Code**
 
@@ -50,7 +49,6 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 
 Can all be found here: [<code>code/api/</code>](https://github.com/illyanyc/technitrade/tree/main/code/api)
 
-* Lambda file is available here: <code>[lambda.py](code/lambda/lambda.py)</code>
 ---
 
 # Application Logic
@@ -66,25 +64,89 @@ The following libraries are used:
 ### Data Computation and Visualization
 * [Numpy](https://numpy.org/) - "The fundamental package for scientific computing with Python".
 * [Pandas](https://pandas.pydata.org/) - data analysis and manipulation tool.
+
+```python
+pip install pandas
+```
+
 * [Matplotlib](https://matplotlib.org/) - Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python.
+
+```python
+pip install matplotlib
+```
 
 ### Database
 * [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) - AWS SDK for Python to create, configure, and manage AWS services, such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Simple Storage Service (Amazon S3). The SDK provides an object-oriented API as well as low-level access to AWS services.
+
+```python
+pip install boto3
+```
+
 * [psycopg2](https://www.psycopg.org/docs/) - PostgreSQL database adapter for the Python programming language.
 
+```python
+pip install psycopg2
+```
+
 ### Data Source APIs
-* [Dotenv](https://pypi.org/project/python-dotenv/) - python-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
+* [Dotenv](https://pypi.org/project/python-dotenv/) - ython-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
+
+```python
+pip install python-dotenv
+```
+
 * [Alpaca Trade API](https://alpaca.markets/docs/) - Internet brokerage and market data connection service.
+
+```python
+pip install alpaca-trade-api
+```
+
 * [NewsAPI](https://newsapi.org/) - NewsAPI locates articles and breaking news headlines from news sources and blogs across the web and returns them as JSON.
+
+```python
+pip install newsapi-python
+```
+
 * [Twitter API](https://developer.twitter.com/en/docs) - Twitter API enables programmatic access to Twitter.
     * [tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API.
+    
+```python
+pip install tweepy
+```
 
 ### Machine Learning
 * [Scikit-Learn](https://scikit-learn.org/stable/) - Machine learning library for python
+
+```python
+pip install scikit-learn
+```
+
 * [Tensorflow](https://www.tensorflow.org/) - an end-to-end open source platform for machine learning.
+
+```python
+pip install tensorflow
+```
+
 * [Keras](https://keras.io/) - Python API used to interact with Tensorflow.
+
+```python
+pip install keras
+```
+
 * [NLTK](https://www.nltk.org/) - NLTK is a leading platform for building Python programs to work with human language data.
-* [Google Cloud API](https://cloud.google.com/natural-language/docs/apis) - an API that connects to Google Cloud Natural Language
+
+```python
+pip install nltk
+```
+
+* [Google Cloud language_v1](https://cloud.google.com/natural-language/docs/apis) - an API that connects to Google Cloud Natural Language
+
+```python
+pip install google-cloud-language
+```
+
+### Technical Analysis Library
+* technitrade - a custom built library for technical analysis.
 
 ### Other Development Frameworks
 * [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Flask is a micro web framework written in Python.
@@ -101,7 +163,7 @@ Amazon Lex Bot gathers the following user info:
 2. Email
 3. *n* number of portfolio stock tickers
 
-<img src="img/twilio_interface.png" width=40%>
+<img src="img/twilio_interface.png" width=33%>
 
 The user gets the News Sentiment, Twitter Sentiment, and Machine Learning AI Stock Opinion via periodic emails. The first email is received right after the Machine Learning model finished training and is fitted with data to predict future stock prices.
 
@@ -109,7 +171,7 @@ The emails are distributed via Twilio's SendGrid service.
 
 The resulting email looks something like this:
 
-![result_email](img/result.png) 
+<img src="img/result.png" width=50%>
 
 
 ---
@@ -135,7 +197,6 @@ All events are triggered by AWS Cloudwatch. AWS Lambda function handle all of th
 
 * Project Infrastructure code can be found here: [<code>Project2Infrastructure</code>](https://github.com/illyanyc/technitrade/tree/main/code/api/Project2Infrastructure)
 
-* Lambda file is available here: <code>[lambda.py](code/lambda/lambda.py)</code>
 
 ## Flask API steps
 
@@ -413,21 +474,15 @@ n_features = tech_ind_df.shape[1]
 ```
 
 ### Scaling
-A <code>RobustScaler</code> is used to scale the technical analysis data [[ScikitLearn](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html)]. The scaler is a Scikit-Learn object : <code>sklearn.preprocessing.RobustScaler()</code>
+A <code>RobustScaler</code> is used to scale the technical analysis data [[ScikitLearn](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html)].
+
+```python
+sklearn.preprocessing.RobustScaler()
+```
 
 Scale features using statistics that are robust to outliers. 
 
 This Scaler removes the median and scales the data according to the quantile range (defaults to IQR: Interquartile Range). The IQR is the range between the 1st quartile (25th quantile) and the 3rd quartile (75th quantile). Centering and scaling happen independently on each feature by computing the relevant statistics on the samples in the training set. Median and interquartile range are then stored to be used on later data using the transform method. 
-
-```python
-scaler = RobustScaler()
-scaler.fit_transform(tech_ind_df)
-
-close_scaler = RobustScaler()
-close_scaler.fit(tech_ind_df[['close']])
-```
-
-Closing prices need their own scaler, because they will need to be inverse transformed via <code>close_scaler.inverse_transform()</code> later on, in order to visualize predicted Closing prices on the original scale.
 
 
 ### Parsing
@@ -508,14 +563,6 @@ model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
 hist = model.fit(X, y, epochs=16, batch_size=128, validation_split=0.1)
 ```
 
-### Model Storage
-The model is then saved as an <code>.h5</code> file, which is an extention for HDF5 file format developed by [HDF](https://www.hdfgroup.org/solutions/hdf5/). The format is designed to store large <code>numpy</code> arrays. 
-
-The models are stored in Amazon S3.
-
-![stored_models](img/saved_model.png)
-
-
 ## Training Results
 
 An example of model training results with conducted with The Coca-Cola Company stock : KO. 
@@ -532,8 +579,6 @@ An example of model training results with conducted with The Coca-Cola Company s
 Predictions are calculated with a <code>validator()</code> helper method.
 
 ![model_pred_KO](img/pred_prices_KO.png)
-
-
 
 
 ## Forecasting stock prices
