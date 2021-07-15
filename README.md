@@ -90,7 +90,7 @@ pip install psycopg2
 ```
 
 ### Data Source APIs
-* [Dotenv](https://pypi.org/project/python-dotenv/) - ython-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
+* [Dotenv](https://pypi.org/project/python-dotenv/) - python-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
 
 ```python
 pip install python-dotenv
