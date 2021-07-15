@@ -19,7 +19,7 @@ This application was created solely to satisfy the requirements of Columbia Univ
 * [Application Logic](#application-logic)
 * [Libraries](#libraries)
 * [Flask API](#flask-api)
-* [Database](#database)
+* [SQL Database](#sql-database)
 * [Interface](#interface)
 * [Technical Analysis](#technical-analysis)
 * [Machine Learning Model](#machine-learning)
@@ -203,7 +203,7 @@ The steps by which the Flask API executes application workflow is outlines in th
 | 6 | User Data        | Send email to the users               | Lambda / CloudWatch /   API |
 
 ---
-# Database
+# SQL Database
 
 <img src="img/postgresql_logo.svg" width=300> 
 
