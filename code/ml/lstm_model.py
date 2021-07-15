@@ -30,7 +30,6 @@ class MachineLearningModel:
     
     split_sequence() : splits the multivariate time sequence
     
-    
     '''
     
     def __init__(self, 

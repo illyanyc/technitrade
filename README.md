@@ -33,6 +33,11 @@ Technitrade lets user track a portfolio of stocks, periodically getting buy, sel
 
 The user interacts with the program via an [Amazon Lex chatbot](#aws-interface). The machine learning analysis is performed using [LSTM (Long Short-Term Memory) model](#machine-learning). The model is trained on [technical analysis indicators](#technical-analysis). Sentiment analysis is performed by [Google Cloud Natural Language](#sentiment-analysis) using NewsAPI and Twitter APIs as data source.
 
+
+**Demo Jupyter Notebooks**
+1. Technical Analysis Demo : <code>[technicals_demo.ipynb](code/technicals/technicals_demo.ipynb)</code>
+2. Machine Learning Demo : <code>[lstm_demo.ipynb](code/ml/lstm_demo.ipynb)</code>
+3. Sentiment Analysis Demo : <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
 ---
 
 # Application Logic
@@ -45,28 +50,96 @@ The user interacts with the program via an [Amazon Lex chatbot](#aws-interface).
 
 The following libraries are used:
 
-### Data and Computation
+### Data Computation and Visualization
 * [Numpy](https://numpy.org/) - "The fundamental package for scientific computing with Python".
 * [Pandas](https://pandas.pydata.org/) - data analysis and manipulation tool.
 
+```python
+pip install pandas
+```
+
+* [Matplotlib](https://matplotlib.org/) - Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python.
+
+```python
+pip install matplotlib
+```
+
 ### Database
 * [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) - AWS SDK for Python (Boto3) to create, configure, and manage AWS services, such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Simple Storage Service (Amazon S3). The SDK provides an object-oriented API as well as low-level access to AWS services.
+
+```python
+pip install boto3
+```
+
 * [prycopg2](https://www.psycopg.org/docs/) - PostgreSQL database adapter for the Python programming language.
 
+```python
+pip install psycopg2
+```
+
 ### Data Source APIs
+* [Dotenv](https://pypi.org/project/python-dotenv/) - ython-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
+
+```python
+pip install python-dotenv
+```
+
 * [Alpaca Trade API](https://alpaca.markets/docs/) - Internet brokerage and market data connection service.
+
+```python
+pip install alpaca-trade-api
+```
+
 * [NewsAPI](https://newsapi.org/) - NewsAPI locates articles and breaking news headlines from news sources and blogs across the web and returns them as JSON.
+
+```python
+pip install newsapi-python
+```
+
 * [Twitter API](https://developer.twitter.com/en/docs) - Twitter API enables programmatic access to Twitter.
     * [tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API.
+    
+```python
+pip install tweepy
+```
 
 ### Machine Learning
+* [Scikit-Learn](https://scikit-learn.org/stable/) - Machine learning library for python
+
+```python
+pip install scikit-learn
+```
+
 * [Tensorflow](https://www.tensorflow.org/) - an end-to-end open source platform for machine learning.
+
+```python
+pip install tensorflow
+```
+
 * [Keras](https://keras.io/) - Python API used to interact with Tensorflow.
+
+```python
+pip install keras
+```
+
+* [NLTK](https://www.nltk.org/) - NLTK is a leading platform for building Python programs to work with human language data.
+
+```python
+pip install nltk
+```
+
+* [Google Cloud language_v1](https://cloud.google.com/natural-language/docs/apis) - an API that connects to Google Cloud Natural Language
+
+```python
+pip install google-cloud-language
+```
 
 ### Technical Analysis Library
 * technitrade - a custom built library for technical analysis.
 
-
+### Other Developement Frameworks
+* [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Flask is a micro web framework written in Python.
+* [AWS Lex Bot]
 ---
 
 # AWS Interface
@@ -521,8 +594,25 @@ The data utilized in sentiment analysis is obtained from 2 sources:
 1. [NewsAPI](https://newsapi.org/)
 2. [Tweepy](https://www.tweepy.org/)
 
+Implemetation of NewsAPI and Tweepy can be found in the demo notebook: <code>[nlp_demo.ipynb](code/nlp/nlp_demo.ipynb)</code>
+
 The sentiment analysis implementation:
 
+```python
+from google.cloud import language_v1
+
+client = language_v1.LanguageServiceClient()
+type_ = language_v1.Document.Type.PLAIN_TEXT
+
+document = {'content' : text_content, 'type_' : type_}
+
+encoding_type = language_v1.EncodingType.UTF8
+
+response = client.analyze_sentiment(requests={'document' : document, 
+                                              'encoding_type' : encoding_type})
+
+score = response.document_sentiment.score
+```
 
 
 ---
