@@ -8,7 +8,7 @@
 
 The content produced by this application is for informational purposes only, you should not construe any such information or other material as legal, tax, investment, financial, or other advice. Nothing contained in this article, Git Repo or withing the output produced by this application constitutes a solicitation, recommendation, endorsement, or offer by any member involved working on this project, any company they represent or any third party service provider to buy or sell any securities or other financial instruments in this or in in any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such jurisdiction. 
 
-The use of word "recommendation", "opinion" in this article or any other word with a similar meaning, within the application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
+The use of word  "opinion" or "recommendation" or any other word with a similar meaning, in this article, within the Technitrade application, or within information produced by the application is for demonstration purposes only, and is not a recommendation to buy or sell any securities or other financial instruments!
 
 This application was created solely to satisfy the requirements of Columbia University FinTech Bootcamp Project #2 Homework, and the results produced by this application may be incorrect. 
 
@@ -65,14 +65,14 @@ The following libraries are used:
 ### Data Computation and Visualization
 * [Numpy](https://numpy.org/) - "The fundamental package for scientific computing with Python".
 * [Pandas](https://pandas.pydata.org/) - data analysis and manipulation tool.
-* [Matplotlib](https://matplotlib.org/) - Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python.
+* [Matplotlib](https://matplotlib.org/) - comprehensive library for creating static, animated, and interactive visualizations in Python.
 
 ### Database
 * [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) - AWS SDK for Python to create, configure, and manage AWS services, such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Simple Storage Service (Amazon S3). The SDK provides an object-oriented API as well as low-level access to AWS services.
-* [psycopg2](https://www.psycopg.org/docs/) - PostgreSQL database adapter for the Python programming language.
+* [psycopg2](https://www.psycopg.org/docs/) - database adapter for the Python programming language.
 
 ### Data Source APIs
-* [Dotenv](https://pypi.org/project/python-dotenv/) - ython-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
+* [Dotenv](https://pypi.org/project/python-dotenv/) - python-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
 * [Alpaca Trade API](https://alpaca.markets/docs/) - Internet brokerage and market data connection service.
 * [NewsAPI](https://newsapi.org/) - NewsAPI locates articles and breaking news headlines from news sources and blogs across the web and returns them as JSON.
 * [Twitter API](https://developer.twitter.com/en/docs) - Twitter API enables programmatic access to Twitter.
@@ -80,14 +80,15 @@ The following libraries are used:
 
 ### Machine Learning
 * [Scikit-Learn](https://scikit-learn.org/stable/) - Machine learning library for python
-* [Tensorflow](https://www.tensorflow.org/) - an end-to-end open source platform for machine learning.
-* [Keras](https://keras.io/) - Python API used to interact with Tensorflow.
-* [NLTK](https://www.nltk.org/) - NLTK is a leading platform for building Python programs to work with human language data.
-* [Google Cloud language_v1](https://cloud.google.com/natural-language/docs/apis) - an API that connects to Google Cloud Natural Language
+* [Tensorflow](https://www.tensorflow.org/) - end-to-end open source platform for machine learning.
+* [Keras](https://keras.io/) - aython API used to interact with Tensorflow.
+* [NLTK](https://www.nltk.org/) - leading platform for building Python programs to work with human language data.
+* [Google Cloud language_v1](https://cloud.google.com/natural-language/docs/apis) - API that connects to Google Cloud Natural Language
 
 ### Other Development Frameworks
-* [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Flask is a micro web framework written in Python.
-* [AWS Lex Bot](https://aws.amazon.com/lex/) - Amazon Lex is a service for building conversational interfaces into any application using voice and text. 
+* [Flask](https://flask.palletsprojects.com/en/2.0.x/) - micro web framework written in Python.
+* [AWS Lex Bot](https://aws.amazon.com/lex/) - service for building conversational interfaces into any application using voice and text.
+* [Twilio](https://www.twilio.com/) - service to programaticly send and receve SMS messages via Python API.
 * [Twilio SendGrid](https://sendgrid.com/) - communication platform for transactional and marketing email.
 ---
 
